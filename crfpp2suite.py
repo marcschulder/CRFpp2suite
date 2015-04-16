@@ -1,6 +1,5 @@
 import sys
 import re
-from pprint import pprint
 
 __author__ = 'Marc Schulder'
 
@@ -169,24 +168,27 @@ def loadCRFppTemplate(templateFile):
     return rules
 
 
+def convertPP2Suite(inputDataFile, templateFile, outputDataFile):
+    sequences = loadCRFppData(inputDataFile)
+    rules = loadCRFppTemplate(templateFile)
+    for sequence in sequences:
+        #print 'Seq', sequence
+        for rule in rules:
+            #print ' rule:', rule
+            for position in range(len(sequence)):
+                #print '  pos:', position, sequence.getToken(position)
+                string = rule.instantiate(position, sequence)
+                #print '  out:', string
+
 
 def main(args):
-    inputDataFile = 'crfpp.data'
-    templateFile = 'crfpp2.template'
-    outputDataFile = 'crfsuite.data'
-
-    sequences = loadCRFppData(inputDataFile)
-    #pprint(sequences)
-    rules = loadCRFppTemplate(templateFile)
-    #pprint(rules)
-    for sequence in sequences:
-        print 'Seq', sequence
-        for rule in rules:
-            print ' rule:', rule
-            for position in range(len(sequence)):
-                print '  pos:', position, sequence.getToken(position)
-                string = rule.instantiate(position, sequence)
-                print '  out:', string
+    if len(args) != 4:
+        print 'USAGE: python crfpp2suite.py INPUT_DATA TEMPLATE OUTPUT_DATA'
+    else:
+        inputDataFile = args[1]
+        templateFile = args[2]
+        outputDataFile = args[3]
+        convertPP2Suite(inputDataFile, templateFile, outputDataFile)
 
 
 if __name__ == '__main__':
