@@ -1,4 +1,6 @@
-nlptools
+CRFpp2suite
 =====
 
-Collection of scripts for natural language processing tasks
+Convert input files from CRF++ format to CRFsuite.
+
+Still in development, but basic functionality should be complete.
